@@ -1,31 +1,40 @@
-{ stdenv, lib, fetchFromGitHub, rustPlatform, openssl, pkg-config, protobuf
-, Security, libiconv, rdkafka, tzdata, coreutils, CoreServices
-
-, features ?
-       ([ "jemallocator" "rdkafka" "rdkafka/dynamic_linking" ]
+{ stdenv
+, lib
+, fetchFromGitHub
+, rustPlatform
+, openssl
+, pkg-config
+, protobuf
+, Security
+, libiconv
+, rdkafka
+, tzdata
+, coreutils
+, CoreServices
+, features ? ([ "jemallocator" "rdkafka" "rdkafka/dynamic_linking" ]
     ++ (lib.optional stdenv.targetPlatform.isUnix "unix")
     ++ [ "sinks" "sources" "transforms" ])
 }:
 
 rustPlatform.buildRustPackage rec {
   pname = "vector";
-  version = "0.12.1";
+  version = "0.13.0";
 
   src = fetchFromGitHub {
-    owner  = "timberio";
-    repo   = pname;
-    rev    = "v${version}";
-    sha256 = "0sw05472znxmggckxjbrl3b8ky8nsw42xmrsb41p8z4q0aw115fd";
+    owner = "timberio";
+    repo = pname;
+    rev = "v${version}";
+    sha256 = "sha256-Sur5QfPIoJXkcYdyNlIHOvmV2yBedhNm7UinmaFEc2E=";
   };
 
-  cargoSha256 = "0mfhrdqry6qrzfx5px1zqgfv5iqa186vl2yh290ibinkxy0x5fa9";
+  cargoSha256 = "sha256-1Xm1X1pfx9J0tBck2WA+zt2OxtQsqustcWPazsPyKPY=";
   nativeBuildInputs = [ pkg-config ];
   buildInputs = [ openssl protobuf rdkafka ]
-                ++ lib.optional stdenv.isDarwin [ Security libiconv coreutils CoreServices ];
+    ++ lib.optional stdenv.isDarwin [ Security libiconv coreutils CoreServices ];
 
   # needed for internal protobuf c wrapper library
-  PROTOC="${protobuf}/bin/protoc";
-  PROTOC_INCLUDE="${protobuf}/include";
+  PROTOC = "${protobuf}/bin/protoc";
+  PROTOC_INCLUDE = "${protobuf}/include";
 
   cargoBuildFlags = [ "--no-default-features" "--features" (lib.concatStringsSep "," features) ];
   checkPhase = "TZDIR=${tzdata}/share/zoneinfo cargo test --no-default-features --features ${lib.concatStringsSep "," features} -- --test-threads 1";
@@ -54,8 +63,8 @@ rustPlatform.buildRustPackage rec {
 
   meta = with lib; {
     description = "A high-performance logs, metrics, and events router";
-    homepage    = "https://github.com/timberio/vector";
-    license     = with licenses; [ asl20 ];
+    homepage = "https://github.com/timberio/vector";
+    license = with licenses; [ asl20 ];
     maintainers = with maintainers; [ thoughtpolice happysalada ];
   };
 }

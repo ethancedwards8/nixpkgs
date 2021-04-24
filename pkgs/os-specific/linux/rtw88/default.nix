@@ -5,13 +5,13 @@ let
 in
 stdenv.mkDerivation {
   pname = "rtw88";
-  version = "unstable-2021-03-21";
+  version = "unstable-2021-04-19";
 
   src = fetchFromGitHub {
     owner = "lwfinger";
     repo = "rtw88";
-    rev = "fb2d8d2be9b33328eaf391926c502b34f6367b01";
-    hash = "sha256-NjB0eooI6j6IDtD572ZkairPdJwc/x+pxITLb7ujoS8=";
+    rev = "0f3cc6a5973bc386d9cb542fc85a6ba027edff5d";
+    hash = "sha256-PRzWXC1lre8gt1GfVdnaG836f5YK57P9a8tG20yef0w=";
   };
 
   makeFlags = [ "KSRC=${kernel.dev}/lib/modules/${kernel.modDirVersion}/build" ];

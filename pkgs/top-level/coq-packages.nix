@@ -27,6 +27,7 @@ let
       coqeal = callPackage ../development/coq-modules/coqeal {};
       coqhammer = callPackage ../development/coq-modules/coqhammer {};
       coqprime = callPackage ../development/coq-modules/coqprime {};
+      coqtail-math = callPackage ../development/coq-modules/coqtail-math {};
       coquelicot = callPackage ../development/coq-modules/coquelicot {};
       corn = callPackage ../development/coq-modules/corn {};
       dpdgraph = callPackage ../development/coq-modules/dpdgraph {};
@@ -41,6 +42,7 @@ let
       interval = callPackage ../development/coq-modules/interval {};
       InfSeqExt = callPackage ../development/coq-modules/InfSeqExt {};
       iris = callPackage ../development/coq-modules/iris {};
+      ITree = callPackage ../development/coq-modules/ITree { };
       ltac2 = callPackage ../development/coq-modules/ltac2 {};
       math-classes = callPackage ../development/coq-modules/math-classes { };
       mathcomp = callPackage ../development/coq-modules/mathcomp {};
