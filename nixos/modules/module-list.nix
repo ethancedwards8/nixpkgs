@@ -191,6 +191,7 @@
   ./programs/traceroute.nix
   ./programs/tsm-client.nix
   ./programs/turbovnc.nix
+  ./programs/twofi.nix
   ./programs/udevil.nix
   ./programs/usbtop.nix
   ./programs/vim.nix
