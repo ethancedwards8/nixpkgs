@@ -14070,6 +14070,8 @@ in
 
   sqlitebrowser = libsForQt5.callPackage ../development/tools/database/sqlitebrowser { };
 
+  sqlitestudio = libsForQt5.callPackage ../applications/misc/sqlitestudio { };
+
   sqlite-utils = with python3Packages; toPythonApplication sqlite-utils;
 
   sqlite-web = callPackage ../development/tools/database/sqlite-web { };
