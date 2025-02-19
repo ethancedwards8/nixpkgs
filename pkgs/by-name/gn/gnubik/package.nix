@@ -6,7 +6,8 @@
   gettext,
   guile,
   xorg,
-  glui,
+  libGLU,
+  mesa,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -21,12 +22,14 @@ stdenv.mkDerivation (finalAttrs: {
   nativeBuildInputs = [
     pkg-config
     gettext
+    guile
   ];
 
   buildInputs = [
     guile
     xorg.libX11
-    glui
+    libGLU
+    mesa
   ];
 
   meta = {
