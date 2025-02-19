@@ -3,6 +3,8 @@
   stdenv,
   fetchFromGitHub,
   cmake,
+  libsForQt5,
+  qt5
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -13,11 +15,17 @@ stdenv.mkDerivation (finalAttrs: {
     owner = "gottcode";
     repo = "tetzle";
     tag = "v${finalAttrs.version}";
-    hash = "";
+    hash = "sha256-1elFcgWoidkBZcRPhnOAgzz5tU4+aeUujgtuCePxffQ=";
   };
 
   nativeBuildInputs = [
     cmake
+    libsForQt5.qt5.qttools
+    qt5.wrapQtAppsHook
+  ];
+
+  buildInputs = [
+    libsForQt5.qt5.qtbase
   ];
 
   meta = {
