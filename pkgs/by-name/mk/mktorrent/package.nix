@@ -3,17 +3,21 @@
   stdenv,
   fetchFromGitHub,
   openssl,
+  versionCheckHook,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "mktorrent";
   version = "1.1";
 
+  strictDeps = true;
+  __structuredAttrs = true;
+
   src = fetchFromGitHub {
     owner = "pobrn";
     repo = "mktorrent";
-    rev = "v${finalAttrs.version}";
-    sha256 = "17pdc5mandl739f8q26n5is8ga56s83aqcrwhlnnplbxwx2inidr";
+    tag = "v${finalAttrs.version}";
+    hash = "sha256-uUUbRed90WsthTwzrAbSpqiHdCzWCIxcGoc2q2ph7Z4=";
   };
 
   makeFlags = [
@@ -27,6 +31,10 @@ stdenv.mkDerivation (finalAttrs: {
   installFlags = [ "PREFIX=${placeholder "out"}" ];
 
   buildInputs = [ openssl ];
+
+  nativeInstallCheckInputs = [ versionCheckHook ];
+  versionCheckProgramArg = "--help";
+  doInstallCheck = true;
 
   meta = {
     description = "Command line utility to create BitTorrent metainfo files";
