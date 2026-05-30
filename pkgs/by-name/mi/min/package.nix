@@ -3,7 +3,6 @@
   buildNimPackage,
   fetchFromGitHub,
   openssl,
-  pcre,
 }:
 
 buildNimPackage (finalAttrs: {
@@ -13,16 +12,15 @@ buildNimPackage (finalAttrs: {
   src = fetchFromGitHub {
     owner = "h3rald";
     repo = "min";
-    rev = "v${finalAttrs.version}";
+    tag = "v${finalAttrs.version}";
     hash = "sha256-Uw03aSFn3EV3H2SkYoYzM5S/WLhEmLV8s3mRF3oT8ro=";
   };
 
   lockFile = ./lock.json;
 
-  buildInputs = [
-    openssl
-    pcre
-  ];
+  nimFlags = [ "-d:nopcre" ];
+
+  buildInputs = [ openssl ];
 
   prePatch = ''
     # remove vendorabilities
@@ -30,8 +28,6 @@ buildNimPackage (finalAttrs: {
     find minpkg/lib -name '*.nim' \
       -exec sed 's|{\.passL:.*\.}|discard|g' -i {} \;
   '';
-
-  env.NIX_LDFLAGS = toString [ "-lpcre" ];
 
   meta = {
     description = "Functional, concatenative programming language with a minimalist syntax";
