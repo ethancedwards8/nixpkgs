@@ -11,12 +11,15 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "quickmem";
-  version = "0.3.0";
+  version = "1.0.0";
+
+  strictDeps = true;
+  __structuredAttrs = true;
 
   src = fetchFromGitLab {
     owner = "arpa2";
     repo = "Quick-MEM";
-    rev = "v${finalAttrs.version}";
+    tag = "v${finalAttrs.version}";
     hash = "sha256-cqg8QN4/I+zql7lVDDAgFA05Dmg4ylBTvPSPP7WATdc=";
   };
 
@@ -39,5 +42,6 @@ stdenv.mkDerivation (finalAttrs: {
     license = lib.licenses.bsd2;
     platforms = lib.platforms.linux;
     maintainers = with lib.maintainers; [ leungbk ];
+    teams = [ lib.teams.ngi ];
   };
 })
