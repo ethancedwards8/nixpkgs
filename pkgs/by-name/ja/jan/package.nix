@@ -53,7 +53,7 @@ let
     extraPkgs =
       pkgs:
       lib.optionals cudaSupport [
-        cudaPackages.cudatoolkit
+        cudaPackages.cuda_cudart
       ];
 
     inherit meta;
