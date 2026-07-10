@@ -33,7 +33,10 @@ assert doCheck -> !mpiSupport;
 assert openclSupport -> !cudaSupport;
 assert cudaSupport -> !openclSupport;
 
-stdenv.mkDerivation (finalAttrs: {
+let
+stdenv' = if cudaSupport then stdenv else stdenv;
+in
+stdenv'.mkDerivation (finalAttrs: {
   # prefix with r when building the R library
   # The R package build results in a special binary file
   # that contains a subset of the .so file use for the CLI
@@ -95,7 +98,7 @@ stdenv.mkDerivation (finalAttrs: {
   nativeBuildInputs = [
     cmake
   ]
-  ++ lib.optionals stdenv.hostPlatform.isDarwin [ llvmPackages.openmp ]
+  ++ lib.optionals stdenv'.hostPlatform.isDarwin [ llvmPackages.openmp ]
   ++ lib.optionals openclSupport [
     opencl-headers
     ocl-icd
@@ -108,9 +111,9 @@ stdenv.mkDerivation (finalAttrs: {
   ++ lib.optionals rLibrary [
     R
     pandoc
-  ];
+  ] ++ lib.optionals cudaSupport [ cudaPackages.cuda_nvcc ];
 
-  buildInputs = [ gtest ] ++ lib.optional cudaSupport cudaPackages.cudatoolkit;
+  buildInputs = [ gtest ] ++ lib.optionals cudaSupport [ cudaPackages.cuda_cudart cudaPackages.nccl ];
 
   propagatedBuildInputs = lib.optionals rLibrary [
     rPackages.data_table
@@ -170,7 +173,7 @@ stdenv.mkDerivation (finalAttrs: {
     mkdir -p $out/lib
     mkdir -p $out/bin
     cp -r ../include $out
-    install -Dm755 ../lib_lightgbm${stdenv.hostPlatform.extensions.sharedLibrary} $out/lib/lib_lightgbm${stdenv.hostPlatform.extensions.sharedLibrary}
+    install -Dm755 ../lib_lightgbm${stdenv'.hostPlatform.extensions.sharedLibrary} $out/lib/lib_lightgbm${stdenv.hostPlatform.extensions.sharedLibrary}
   ''
   + lib.optionalString (!rLibrary && !pythonLibrary) ''
     install -Dm755 ../lightgbm $out/bin/lightgbm
