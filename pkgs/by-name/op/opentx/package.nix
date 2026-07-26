@@ -13,15 +13,18 @@
   avrdude,
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   pname = "opentx";
   version = "2.3.15";
+
+  __structuredAttrs = true;
+  strictDeps = true;
 
   src = fetchFromGitHub {
     owner = "opentx";
     repo = "opentx";
-    rev = "release/${version}";
-    sha256 = "sha256-F3zykJhKuIpLQSTjn7mcdjEmgRAlwCZpkTaKQR9ve3g=";
+    tag = "release/${finalAttrs.version}";
+    hash = "sha256-F3zykJhKuIpLQSTjn7mcdjEmgRAlwCZpkTaKQR9ve3g=";
   };
 
   patches = [
@@ -74,7 +77,7 @@ stdenv.mkDerivation rec {
       firmware to the radio, backing up model settings, editing settings and
       running radio simulators.
     '';
-    mainProgram = "companion" + lib.concatStrings (lib.take 2 (lib.splitVersion version));
+    mainProgram = "companion" + lib.concatStrings (lib.take 2 (lib.splitVersion finalAttrs.version));
     homepage = "https://www.open-tx.org/";
     license = lib.licenses.gpl2Only;
     platforms = [
@@ -86,5 +89,4 @@ stdenv.mkDerivation rec {
       lopsided98
     ];
   };
-
-}
+})
