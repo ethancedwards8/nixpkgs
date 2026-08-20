@@ -48,7 +48,7 @@ stdenv.mkDerivation (finalAttrs: {
   installPhase = ''
     runHook preInstall
 
-    install -D kloak $out/bin/kloak
+    installBin kloak
 
     ronn --roff man/kloak.8.ronn
     installManPage man/kloak.8
