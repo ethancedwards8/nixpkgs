@@ -3,6 +3,7 @@
   fetchFromGitHub,
   buildGoModule,
   versionCheckHook,
+  installAgentSkills,
   nix-update-script,
 }:
 
@@ -23,8 +24,11 @@ buildGoModule (finalAttrs: {
 
   ldflags = [
     "-s"
-    "-w"
     "-X=github.com/github/gh-stack/cmd.Version=${finalAttrs.version}"
+  ];
+
+  nativeBuildInputs = [
+    installAgentSkills
   ];
 
   nativeInstallCheckInputs = [ versionCheckHook ];
