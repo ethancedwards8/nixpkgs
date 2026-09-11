@@ -12,7 +12,7 @@
   ocl-icd,
   perl,
   python3,
-  rocmPackages ? { },
+  rocmPackages,
   rocmSupport ? config.rocmSupport,
   xxhash,
   zlib,
@@ -93,15 +93,16 @@ stdenv.mkDerivation (finalAttrs: {
 
   postFixup =
     let
-      LD_LIBRARY_PATH = builtins.concatStringsSep ":" (
+      LD_LIBRARY_PATH = lib.makeLibraryPath (
         [
-          "${ocl-icd}/lib"
+          ocl-icd
         ]
         ++ lib.optionals cudaSupport [
-          "${cudaPackages.cudatoolkit}/lib"
+          cudaPackages.cuda_nvrtc
+          cudaPackages.cuda_cudart
         ]
         ++ lib.optionals rocmSupport [
-          "${rocmPackages.clr}/lib"
+          rocmPackages.clr
         ]
       );
     in
