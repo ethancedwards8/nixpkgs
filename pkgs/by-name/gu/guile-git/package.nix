@@ -9,6 +9,7 @@
   autoreconfHook,
   pkg-config,
   texinfo,
+  guileImportsCheckHook,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -43,6 +44,7 @@ stdenv.mkDerivation (finalAttrs: {
     guile
     pkg-config
     texinfo
+    guileImportsCheckHook
   ];
   buildInputs = [
     guile
@@ -60,6 +62,10 @@ stdenv.mkDerivation (finalAttrs: {
   postConfigure = ''
     sed -i -e '94i (test-skip 1)' ./tests/proxy.scm
   '';
+
+  guileImportsCheck = [
+    "git"
+  ];
 
   __darwinAllowLocalNetworking = true;
 
