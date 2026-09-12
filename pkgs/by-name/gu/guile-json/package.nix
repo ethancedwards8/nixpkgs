@@ -5,6 +5,7 @@
   guile,
   texinfo,
   pkg-config,
+  guileImportsCheckHook,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -13,20 +14,26 @@ stdenv.mkDerivation (finalAttrs: {
 
   src = fetchurl {
     url = "mirror://savannah/guile-json/guile-json-${finalAttrs.version}.tar.gz";
-    sha256 = "sha256-OLoEjtKdEvBbMsWy+3pReVxEi0HkA6Kxty/wA1gX84g=";
+    hash = "sha256-OLoEjtKdEvBbMsWy+3pReVxEi0HkA6Kxty/wA1gX84g=";
   };
 
+  __structuredAttrs = true;
   strictDeps = true;
   nativeBuildInputs = [
     guile
     pkg-config
     texinfo
+    guileImportsCheckHook
   ];
   buildInputs = [
     guile
   ];
   doCheck = true;
   makeFlags = [ "GUILE_AUTO_COMPILE=0" ];
+
+  guileImportsCheck = [
+    "json"
+  ];
 
   meta = {
     description = "JSON Bindings for GNU Guile";
