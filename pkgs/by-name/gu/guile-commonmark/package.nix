@@ -6,6 +6,7 @@
   guile,
   pkg-config,
   texinfo,
+  guileImportsCheckHook,
 }:
 
 stdenv.mkDerivation {
@@ -27,6 +28,7 @@ stdenv.mkDerivation {
     guile
     pkg-config
     texinfo # for makeinfo
+    guileImportsCheckHook
   ];
   buildInputs = [
     guile
@@ -37,6 +39,10 @@ stdenv.mkDerivation {
 
   makeFlags = [
     "GUILE_AUTO_COMPILE=0"
+  ];
+
+  guileImportsCheck = [
+    "commonmark"
   ];
 
   meta = {
