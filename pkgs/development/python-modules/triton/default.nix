@@ -187,8 +187,8 @@ buildPythonPackage.override { stdenv = effectiveStdenv; } (finalAttrs: {
 
     # TODO: Unused because of how TRITON_OFFLINE_BUILD currently works (subject to change)
     TRITON_PTXAS_PATH = lib.getExe' cudaPackages.cuda_nvcc "ptxas"; # Make sure cudaPackages is the right version each update (See python/setup.py)
-    TRITON_CUOBJDUMP_PATH = lib.getExe' cudaPackages.cuda_cuobjdump "cuobjdump";
-    TRITON_NVDISASM_PATH = lib.getExe' cudaPackages.cuda_nvdisasm "nvdisasm";
+    TRITON_CUOBJDUMP_PATH = lib.getExe cudaPackages.cuda_cuobjdump;
+    TRITON_NVDISASM_PATH = lib.getExe cudaPackages.cuda_nvdisasm;
     TRITON_CUDACRT_PATH = lib.getInclude cudaPackages.cuda_nvcc;
     TRITON_CUDART_PATH = lib.getInclude cudaPackages.cuda_cudart;
     TRITON_CUPTI_PATH = cudaPackages.cuda_cupti;
