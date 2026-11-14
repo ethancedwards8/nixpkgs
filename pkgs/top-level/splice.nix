@@ -19,6 +19,17 @@ lib: pkgs: actuallySplice:
 let
   inherit (lib.customisation) mapCrossIndex renameCrossIndexFrom;
   inherit (lib) mapAttrs;
+  # Get the set of outputs of a derivation. If one derivation fails to
+  # evaluate we don't want to diverge the entire splice, so we fall back
+  # on {}
+  tryGetOutputs =
+    value0:
+    let
+      inherit (builtins.tryEval value0) success value;
+    in
+    getOutputs (lib.optionalAttrs success value);
+  getOutputs =
+    value: lib.genAttrs (value.outputs or (lib.optional (value ? out) "out")) (output: value.${output});
 
   spliceReal =
     inputs:
@@ -41,17 +52,6 @@ let
           augmentedValue = defaultValue // {
             __spliced = lib.filterAttrs (k: v: inputs.${k} ? ${name}) value';
           };
-          # Get the set of outputs of a derivation. If one derivation fails to
-          # evaluate we don't want to diverge the entire splice, so we fall back
-          # on {}
-          tryGetOutputs =
-            value0:
-            let
-              inherit (builtins.tryEval value0) success value;
-            in
-            getOutputs (lib.optionalAttrs success value);
-          getOutputs =
-            value: lib.genAttrs (value.outputs or (lib.optional (value ? out) "out")) (output: value.${output});
           outputNames = defaultValue.outputs or (lib.optional (defaultValue ? out) "out");
           outputSplice = spliceReal (
             mapCrossIndex tryGetOutputs value' // { hostTarget = getOutputs value'.hostTarget; }
